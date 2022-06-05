@@ -22,20 +22,9 @@ namespace BBS
         {
             try
             {
-                SvcReturn resRtn = MyDBClient.GetDataSetXml(mycmd);
-
-                var doc = XDocument.Parse(resRtn.ReturnStr);
-                List<TestItemMst> lstReturn = new List<TestItemMst>();
-
-                lstReturn = (from r in doc.Root.Elements("Table")
-                             select new TestItemMst()
-                             {
-                                 TEST_ID = Convert.ToInt32(r.Element("TEST_ID").Value),
-                                 TEST_MST_NM = r.Element("TEST_MST_NM").Value,
-                                 CREATION_DATE = Convert.ToDateTime(r.Element("CREATION_DATE").Value)
-
-                             }).ToList();
-                return lstReturn;
+                SvcReturnList<TestItemMst> rtn = MyDBClient.GetDataList<TestItemMst>(mycmd);
+                
+                return rtn.ReturnList;
 
 
             }
@@ -50,14 +39,8 @@ namespace BBS
         {
             try
             {
-                SvcReturn resRtn = MyDBClient.GetDataSetXml(mycmd);
-
-                StringReader theReader = new StringReader(resRtn.ReturnStr);
-                DataSet ds = new DataSet();
-                ds.ReadXml(theReader, XmlReadMode.ReadSchema);
-                return ds;
-
-
+                SvcReturnDs resRtn = MyDBClient.GetDataSet(mycmd);
+                return resRtn.ReturnDs;
             }
             catch (Exception ex)
             {
@@ -66,32 +49,13 @@ namespace BBS
             }
 
         }
-        public List<DBOutPut> ExecCommand(List<MyCommand> lstMyCmd)
+        public SvcReturnList<DBOutPut> ExecCommand(List<MyCommand> lstMyCmd)
         {
             try
             {
-                SvcReturn resRtn = MyDBClient.ExecNonQuery(lstMyCmd.ToArray());
+                SvcReturnList<DBOutPut> resRtn = MyDBClient.ExecCommand<DBOutPut>(lstMyCmd);
 
-                var doc = XDocument.Parse(resRtn.ReturnStr);
-                List<DBOutPut> lstOutPut = new List<DBOutPut>();
-
-                lstOutPut = (from r in doc.Root.Elements("output")
-                             select new DBOutPut()
-                             {
-                                 Rowseq = Convert.ToInt32(r.Element("rowseq").Value),
-                                 CommandName = r.Element("CommandName").Value,
-                                 ParameterName = r.Element("ParameterName").Value,
-                                 OutValue = r.Element("OutValue").Value,
-
-                             }).ToList();
-                return lstOutPut;
-
-                //ExecReturn execReturn = new ExecReturn()
-                //{
-                //    ReturnCD = resRtn.ReturnCD,
-                //    ReturnMsg = resRtn.ReturnMsg,
-                //    ReturnOutPut = lstReturn
-                //};
+                return resRtn;
                 //return execReturn;
 
             }
@@ -101,5 +65,6 @@ namespace BBS
                 throw ex;
             }
         }
+    
     }
 }

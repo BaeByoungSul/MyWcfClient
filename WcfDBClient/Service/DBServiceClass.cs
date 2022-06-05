@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Data;
 using System.ServiceModel;
+using System.Xml.Serialization;
 
 namespace BBS
 {
     [ServiceContract(Namespace = "http://nakdong.wcf.service")]
     public interface IDBService
+    {
+        [OperationContract]
+        SvcReturn ExecNonQuery(MyCommand[] cmds);
+
+        [OperationContract]
+        SvcReturn GetDataSetXml(MyCommand cmd);
+    }
+
+    [ServiceContract(Namespace = "http://nakdong.wcf.service")]
+    public interface IDBService2
     {
         [OperationContract]
         SvcReturn ExecNonQuery(MyCommand[] cmds);
@@ -101,6 +112,8 @@ namespace BBS
     /// <summary>
     /// ExecNonQuery시 Out Put값을 저장
     /// </summary>
+  
+    [XmlType(TypeName = "output")]
     public class DBOutPut
     {
         public int Rowseq { get; set; }
