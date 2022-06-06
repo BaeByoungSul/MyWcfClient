@@ -24,10 +24,10 @@ namespace BBS
     public interface IDBService2
     {
         [OperationContract]
-        SvcReturn ExecNonQuery(MyCommand[] cmds);
+        SvcReturn ExecNonQuery(MyCommand[] myCmds);
 
         [OperationContract]
-        SvcReturn GetDataSetXml(MyCommand cmd);
+        SvcReturn GetDataSetXml(MyCommand myCmd);
     }
 
     [DataContract]

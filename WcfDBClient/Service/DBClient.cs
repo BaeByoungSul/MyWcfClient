@@ -41,8 +41,10 @@ namespace BBS
     {
         //private EndpointAddress address_http = new EndpointAddress("http://20.227.136.125:9110/DBService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.227.136.125:9120/DBService");
-        private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9110/DBService2");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9120/DBService2");
+        //private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9110/DBService2");
+        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9120/DBService2");
+        private EndpointAddress address_http = new EndpointAddress("http://192.168.219.102:9110/DBService2");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://192.168.219.102:9120/DBService2");
 
         private ChannelFactory<IDBService2> MyFactory { get; set; }
         private IDBService2 MyChannel { get; set; }
