@@ -17,8 +17,12 @@ namespace BBS
     public class FileClient:IDisposable
     {
 
-        private EndpointAddress address_http = new EndpointAddress("http://20.227.136.125:9130/FileService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.227.136.125:9140/FileService");
+        //private EndpointAddress address_http = new EndpointAddress("http://20.227.136.125:9210/FileService");
+        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.227.136.125:9210/FileService");
+        private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9210/FileService");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9220/FileService");
+
+
         private ChannelFactory<IFileService> MyFactory { get; set; }
         private IFileService MyChannel { get; set; }
 
@@ -71,15 +75,15 @@ namespace BBS
             BasicHttpBinding binding = new BasicHttpBinding();
 
             binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = WSMessageEncoding.Mtom;
+            //binding.MessageEncoding = WSMessageEncoding.Mtom;
             binding.Security.Mode = BasicHttpSecurityMode.None;
 
             binding.MaxReceivedMessageSize = 2147483647;
-            
-            binding.SendTimeout = new TimeSpan(0, 15, 0);
-            binding.ReceiveTimeout = new TimeSpan(0, 15, 0);
-            binding.OpenTimeout = new TimeSpan(0, 1, 0);
-            binding.CloseTimeout = new TimeSpan(0, 1, 0);
+
+            binding.OpenTimeout = TimeSpan.FromMinutes(5);
+            binding.CloseTimeout = TimeSpan.FromMinutes(5);
+            binding.ReceiveTimeout = TimeSpan.FromMinutes(15);
+            binding.SendTimeout = TimeSpan.FromMinutes(15);
 
             return binding;
         }

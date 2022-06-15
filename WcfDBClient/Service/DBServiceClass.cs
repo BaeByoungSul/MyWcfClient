@@ -7,29 +7,45 @@ using System.Runtime.Serialization;
 using System.Data;
 using System.ServiceModel;
 using System.Xml.Serialization;
+using System.Transactions;
 
 namespace BBS
 {
     [ServiceContract(Namespace = "http://nakdong.wcf.service")]
+    public interface IDBServiceWs
+    {
+        [OperationContract]
+        [TransactionFlow(TransactionFlowOption.Mandatory)]
+        SvcReturn ExecNonQueryWs(MyCommand myCmd);
+    }
+
+
+    //[ServiceContract(Namespace = "http://nakdong.wcf.service")]
+    //public interface IDBService
+    //{
+    //    [OperationContract]
+    //    SvcReturn ExecNonQuery(MyCommand[] myCmds);
+
+    //    [OperationContract]
+    //    SvcReturn GetDataSetXml(MyCommand myCmd);
+
+    //    SvcReturn ExecNonQueryWs(MyCommand myCmd);
+    //}
+
+    [ServiceContract(Namespace = "http://nakdong.wcf.service")]
     public interface IDBService
     {
         [OperationContract]
-        SvcReturn ExecNonQuery(MyCommand[] cmds);
+        void SetTransOption(TransactionScopeOption scopeOption);
 
-        [OperationContract]
-        SvcReturn GetDataSetXml(MyCommand cmd);
-    }
-
-    [ServiceContract(Namespace = "http://nakdong.wcf.service")]
-    public interface IDBService2
-    {
         [OperationContract]
         SvcReturn ExecNonQuery(MyCommand[] myCmds);
 
         [OperationContract]
         SvcReturn GetDataSetXml(MyCommand myCmd);
-    }
 
+
+    }
     [DataContract]
     public class MyCommand
     {
@@ -49,11 +65,14 @@ namespace BBS
         public int CommandType { get; set; }
         [DataMember(Order = 3, IsRequired = true)]
         public string CommandText { get; set; }
+
         [DataMember(Order = 4)]
         public MyPara[] Parameters { get; set; }
+
         [DataMember(Order = 5)]
         public MyParaValue[][] ParaValues { get; set; }
     }
+   
     [DataContract]
     public class MyPara
     {
@@ -113,7 +132,7 @@ namespace BBS
     /// ExecNonQuery시 Out Put값을 저장
     /// </summary>
   
-    [XmlType(TypeName = "output")]
+    [XmlType(TypeName = "DBOutPut")]
     public class DBOutPut
     {
         public int Rowseq { get; set; }

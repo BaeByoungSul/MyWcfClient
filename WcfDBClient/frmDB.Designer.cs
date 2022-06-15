@@ -38,17 +38,20 @@
             this.dgv_t1_1 = new System.Windows.Forms.DataGridView();
             this.cbo_t1 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.dgv_t2_2 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
             this.dgv_t2_1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
-            this.dgv_t2_2 = new System.Windows.Forms.DataGridView();
+            this.button6 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_t1_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_t1_1)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_t2_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_t2_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_t2_1)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_t1_2
@@ -76,6 +79,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.dgv_t1_2);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.btn_t1_1);
@@ -88,7 +92,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(880, 441);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "DB Service";
+            this.tabPage1.Text = "MSSql Wcf Client";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // dgv_t1_2
@@ -149,13 +153,15 @@
             this.cbo_t1.Items.AddRange(new object[] {
             "Http",
             "NetTcp"});
-            this.cbo_t1.Location = new System.Drawing.Point(39, 14);
+            this.cbo_t1.Location = new System.Drawing.Point(23, 16);
             this.cbo_t1.Name = "cbo_t1";
             this.cbo_t1.Size = new System.Drawing.Size(134, 20);
             this.cbo_t1.TabIndex = 14;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button5);
+            this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.dgv_t2_2);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.dgv_t2_1);
@@ -166,6 +172,35 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(706, 79);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(144, 53);
+            this.button5.TabIndex = 25;
+            this.button5.Text = "Aws";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(594, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(144, 53);
+            this.button4.TabIndex = 24;
+            this.button4.Text = "Oracle Wallet";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // dgv_t2_2
+            // 
+            this.dgv_t2_2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_t2_2.Location = new System.Drawing.Point(396, 127);
+            this.dgv_t2_2.Name = "dgv_t2_2";
+            this.dgv_t2_2.RowTemplate.Height = 23;
+            this.dgv_t2_2.Size = new System.Drawing.Size(342, 267);
+            this.dgv_t2_2.TabIndex = 23;
             // 
             // button3
             // 
@@ -196,14 +231,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // dgv_t2_2
+            // button6
             // 
-            this.dgv_t2_2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_t2_2.Location = new System.Drawing.Point(396, 127);
-            this.dgv_t2_2.Name = "dgv_t2_2";
-            this.dgv_t2_2.RowTemplate.Height = 23;
-            this.dgv_t2_2.Size = new System.Drawing.Size(342, 267);
-            this.dgv_t2_2.TabIndex = 23;
+            this.button6.Location = new System.Drawing.Point(694, 358);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(90, 39);
+            this.button6.TabIndex = 21;
+            this.button6.Text = "button6";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // frmDB
             // 
@@ -218,8 +254,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_t1_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_t1_1)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_t2_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_t2_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_t2_1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -239,6 +275,9 @@
         private System.Windows.Forms.DataGridView dgv_t2_1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridView dgv_t2_2;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
     }
 }
 

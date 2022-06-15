@@ -93,11 +93,19 @@ namespace WcfClient
 
         private void btn_t1_3_Click(object sender, EventArgs e)
         {
+            //
+            StringBuilder strQuery1 = new StringBuilder();
+            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST1(COL1,COL2) VALUES ('111','222' ) ");
+            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST21(COL1,COL2) VALUES ('112','222' ) ");
+            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST1(COL1,COL2) VALUES ('113','222' ) ");
+
             // Create Db Command
             List<MyCommand> mycmds = new List<MyCommand>();
+            MyCommand cmd = new MyCommand("MST_1", "BSBAE", (int)CommandType.Text, strQuery1.ToString());
+
             MyCommand cmdMst = ITEM_MST_Command();
             MyCommand cmdDtl = ITEM_DTL_Command();
-            mycmds.AddRange(new MyCommand[] { cmdMst, cmdDtl });
+            mycmds.AddRange(new MyCommand[] {  cmdMst, cmdDtl });
 
             try
             {
@@ -195,6 +203,9 @@ namespace WcfClient
             else if (cbo_t1.Text.Equals("NetTcp")) bindinEnum = MyBindinEnum.NetTcp;
 
             DBClient _cli = new DBClient(bindinEnum);
+
+           
+
             SvcReturnList<TestItemMst,TestItemDtl>  rtn = _cli.GetDataList<TestItemMst, TestItemDtl>(GetCmd());
 
             dgv_t1_1.DataSource = null;
@@ -294,7 +305,7 @@ namespace WcfClient
             //MyCommand _cmd = new MyCommand("MST", "CSMT",
             //               (int)CommandType.Text, "SELECT * FROM PM_BAD_CODE");
 
-            MyCommand _cmd = GetOraCmd_T2_2();
+            MyCommand _cmd = GetOraCmd_T2_1();
 
             SvcReturn rtn = TestSelect2(_cmd);
             //SvcReturn rtn = TestSelect(_cmd);
@@ -310,10 +321,18 @@ namespace WcfClient
 
 
         }
+        private MyCommand GetOraCmd_T2_1()
+        {
+            MyCommand _cmd = new MyCommand("MST", "AWS_ORA_DB",
+                                     (int)CommandType.Text, "SELECT sysdate from dual");
 
+            
+            return _cmd;
+
+        }
         private MyCommand GetOraCmd_T2_2()
         {
-            MyCommand _cmd = new MyCommand("MST", "CSMT",
+            MyCommand _cmd = new MyCommand("MST", "AWS_ORA_DB",
                                      (int)CommandType.StoredProcedure, "USP_ZBBS_PKG.Test_Query1");
 
             _cmd.Parameters = new MyPara[3];
@@ -593,6 +612,77 @@ namespace WcfClient
                 dbDataParameter.Direction = (ParameterDirection)Convert.ToInt32(para.Direction);
                 dbcmd.Parameters.Add(dbDataParameter);
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string conString = "User ID=ADMIN;Password=Asdfqwer1234!@#$;" +
+                    "Data Source=nakdongdb_medium;Connection Timeout=130;";
+
+                OracleConfiguration.TnsAdmin = @"D:\Prog_Git\03.WCF\WcfClient\WcfDBClient\bin\Debug";
+                OracleConfiguration.WalletLocation    = OracleConfiguration.TnsAdmin;
+                OracleConfiguration.TraceFileLocation = OracleConfiguration.TnsAdmin;
+                OracleConfiguration.TraceLevel = 7;
+
+
+                OracleConnection con = new OracleConnection(conString);
+                OracleCommand cmd = con.CreateCommand();
+                con.Open();
+
+                cmd.CommandText = "select sysdate from dual;";
+                OracleDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetString(0));
+                }
+                reader.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine( ex.ToString());
+                
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // 기본 binding
+            MyBindinEnum bindinEnum = MyBindinEnum.Http;
+
+            if (cbo_t1.Text.Equals("Http")) bindinEnum = MyBindinEnum.Http;
+            else if (cbo_t1.Text.Equals("NetTcp")) bindinEnum = MyBindinEnum.NetTcp;
+
+            DBClient _cli = new DBClient(bindinEnum);
+            SvcReturnDs rtn = _cli.GetDataSet(GetOraCmd_T2_1());
+
+            dgv_t2_1.DataSource = null;
+            
+
+            if (rtn.ReturnCD == "OK")
+            {
+                dgv_t2_1.DataSource = rtn.ReturnDs.Tables[0];
+                
+
+            }
+            
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            BasicHttpBinding myBinding = new BasicHttpBinding();
+
+            EndpointAddress myEndpoint = new EndpointAddress("http://172.20.105.36:9110/DBService");
+
+            ChannelFactory<IDBService> myChannelFactory = new ChannelFactory<IDBService>(myBinding, myEndpoint);
+
+            // Create a channel.
+            IDBService _cli = myChannelFactory.CreateChannel();
+            SvcReturn result = _cli.GetDataSetXml(GetCmd());
+            Console.WriteLine(result.ReturnStr);
+            ((IClientChannel)_cli).Close();
         }
     }
 
