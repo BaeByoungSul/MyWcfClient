@@ -672,17 +672,19 @@ namespace WcfClient
 
         private void button6_Click(object sender, EventArgs e)
         {
-            BasicHttpBinding myBinding = new BasicHttpBinding();
+            dgv_t1_1.DataSource  = null;
+            dgv_t1_2.DataSource = null;
+            //BasicHttpBinding myBinding = new BasicHttpBinding();
 
-            EndpointAddress myEndpoint = new EndpointAddress("http://172.20.105.36:9110/DBService");
+            //EndpointAddress myEndpoint = new EndpointAddress("http://172.20.105.36:9110/DBService");
 
-            ChannelFactory<IDBService> myChannelFactory = new ChannelFactory<IDBService>(myBinding, myEndpoint);
+            //ChannelFactory<IDBService> myChannelFactory = new ChannelFactory<IDBService>(myBinding, myEndpoint);
 
-            // Create a channel.
-            IDBService _cli = myChannelFactory.CreateChannel();
-            SvcReturn result = _cli.GetDataSetXml(GetCmd());
-            Console.WriteLine(result.ReturnStr);
-            ((IClientChannel)_cli).Close();
+            //// Create a channel.
+            //IDBService _cli = myChannelFactory.CreateChannel();
+            //SvcReturn result = _cli.GetDataSetXml(GetCmd());
+            //Console.WriteLine(result.ReturnStr);
+            //((IClientChannel)_cli).Close();
         }
     }
 

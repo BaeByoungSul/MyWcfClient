@@ -18,6 +18,7 @@ namespace BBS
     public interface IFileService
     {
         [OperationContract]
+
         FileData DownloadFile(DownloadRequest request);
 
         [OperationContract]
@@ -31,7 +32,7 @@ namespace BBS
     public class DownloadRequest
     {
         [MessageBodyMember]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
     }
 
@@ -39,7 +40,7 @@ namespace BBS
     public class FileData : IDisposable
     {
         [MessageHeader]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
         [MessageHeader]
         public long FileLength { get; set; }
@@ -49,13 +50,9 @@ namespace BBS
 
         public void Dispose()
         {
-            if (Stream == null)
-            {
-                return;
-            }
-
+            if (Stream == null) return;
             Stream.Close();
-            Stream = null;
+            GC.SuppressFinalize(this);
         }
 
     }
@@ -63,7 +60,6 @@ namespace BBS
     [MessageContract]
     public class DownloadResponse
     {
-
         [MessageHeader]
         public long FileLength { get; set; }
         [MessageBodyMember]
@@ -76,8 +72,7 @@ namespace BBS
         public bool FileExists { get; set; }
 
         [DataMember(Order = 1)]
-        public string FileVersion { get; set; }
+        public string FileVersion { get; set; } = string.Empty;
     }
-
 
 }

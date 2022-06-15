@@ -19,8 +19,10 @@ namespace BBS
 
         //private EndpointAddress address_http = new EndpointAddress("http://20.227.136.125:9210/FileService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.227.136.125:9210/FileService");
-        private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9210/FileService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9220/FileService");
+       // private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9210/FileService");
+        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9220/FileService");
+        private EndpointAddress address_http = new EndpointAddress("http://localhost:9210/FileService");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9220/FileService");
 
 
         private ChannelFactory<IFileService> MyFactory { get; set; }
@@ -77,9 +79,10 @@ namespace BBS
             binding.TransferMode = TransferMode.Streamed;
             //binding.MessageEncoding = WSMessageEncoding.Mtom;
             binding.Security.Mode = BasicHttpSecurityMode.None;
-
+            // < readerQuotas maxStringContentLength = "2147483647" />
+    
             binding.MaxReceivedMessageSize = 2147483647;
-
+          
             binding.OpenTimeout = TimeSpan.FromMinutes(5);
             binding.CloseTimeout = TimeSpan.FromMinutes(5);
             binding.ReceiveTimeout = TimeSpan.FromMinutes(15);
