@@ -16,7 +16,7 @@ namespace WcfClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmDB());
+            Application.Run(new frmOracle());
         }
     }
 }

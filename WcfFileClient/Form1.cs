@@ -29,7 +29,8 @@ namespace WcfClient
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = Application.StartupPath;
-                openFileDialog.Filter = "dll files (*.dll)|*.dll|All files (*.*)|*.*";
+                openFileDialog.Filter = "All files (*.*)|All files (*.*)|*.dll|*.*";
+//                openFileDialog.Filter = "dll files (*.dll)|*.dll|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 //openFileDialog.RestoreDirectory = true;
 

@@ -16,11 +16,9 @@ namespace BBS
     [ServiceContract(Namespace = "http://nakdong.wcf.service")]
     public interface IDBService
     {
-        [OperationContract]
-        void SetTransOption(TransactionScopeOption scopeOption);
 
         [OperationContract]
-        SvcReturn ExecNonQuery(MyCommand[] myCmds);
+        SvcReturn ExecNonQuery(MyCommand[] myCmds, TransactionScopeOption scopeOption = TransactionScopeOption.Required);
 
         [OperationContract]
         SvcReturn GetDataSetXml(MyCommand myCmd);

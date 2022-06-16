@@ -112,6 +112,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmOracle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOracle.Designer.cs">
+      <DependentUpon>frmOracle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\TestItemMst.cs" />
     <Compile Include="Service\DBClient.cs" />
     <Compile Include="frmDB.cs">
@@ -125,6 +131,9 @@
     <Compile Include="Service\DBServiceClass.cs" />
     <EmbeddedResource Include="frmDB.resx">
       <DependentUpon>frmDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOracle.resx">
+      <DependentUpon>frmOracle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

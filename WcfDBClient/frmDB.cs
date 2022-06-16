@@ -95,9 +95,9 @@ namespace WcfClient
         {
             //
             StringBuilder strQuery1 = new StringBuilder();
-            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST1(COL1,COL2) VALUES ('111','222' ) ");
-            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST21(COL1,COL2) VALUES ('112','222' ) ");
-            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST1(COL1,COL2) VALUES ('113','222' ) ");
+            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST1(COL1,COL2) VALUES ('dfd','222' ) ");
+            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST21(COL1,COL2) VALUES ('df','222' ) ");
+            strQuery1.AppendLine("INSERT INTO  TESTDB..A_TEST1(COL1,COL2) VALUES ('fdf','222' ) ");
 
             // Create Db Command
             List<MyCommand> mycmds = new List<MyCommand>();
@@ -105,7 +105,7 @@ namespace WcfClient
 
             MyCommand cmdMst = ITEM_MST_Command();
             MyCommand cmdDtl = ITEM_DTL_Command();
-            mycmds.AddRange(new MyCommand[] {  cmdMst, cmdDtl });
+            mycmds.AddRange(new MyCommand[] { cmdMst, cmdDtl });
 
             try
             {
@@ -122,8 +122,9 @@ namespace WcfClient
                 else if (cbo_t1.Text.Equals("NetTcp")) bindinEnum = MyBindinEnum.NetTcp;
                
                 DBClient _cli = new DBClient(bindinEnum);
+                //_cli.SetTransOption(System.Transactions.TransactionScopeOption.Suppress);
 
-                SvcReturnList<DBOutPut> rtn = _cli.ExecQuery<DBOutPut>(mycmds);
+                SvcReturnList<DBOutPut> rtn = _cli.ExecQuery<DBOutPut>(mycmds, System.Transactions.TransactionScopeOption.Suppress);
 
                 dgv_t1_1.DataSource = rtn.ReturnList;
 
@@ -205,7 +206,6 @@ namespace WcfClient
             DBClient _cli = new DBClient(bindinEnum);
 
            
-
             SvcReturnList<TestItemMst,TestItemDtl>  rtn = _cli.GetDataList<TestItemMst, TestItemDtl>(GetCmd());
 
             dgv_t1_1.DataSource = null;

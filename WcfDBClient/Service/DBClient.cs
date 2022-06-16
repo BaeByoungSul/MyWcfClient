@@ -7,6 +7,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -40,12 +41,12 @@ namespace BBS
 
     public class DBClient:IDisposable
     {
-        //private EndpointAddress address_http = new EndpointAddress("http://20.41.115.26:9110/DBService");
-        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.41.115.26:9120/DBService");
+        private EndpointAddress address_http = new EndpointAddress("http://20.41.115.26:9110/DBService");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.41.115.26:9120/DBService");
         //private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9110/DBService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9120/DBService");
-        private EndpointAddress address_http = new EndpointAddress("http://localhost:9110/DBService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9120/DBService ");
+        //private EndpointAddress address_http = new EndpointAddress("http://localhost:9110/DBService");
+        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9120/DBService ");
 
         private ChannelFactory<IDBService> MyFactory { get; set; }
         private IDBService MyChannel { get; set; }
@@ -97,24 +98,29 @@ namespace BBS
 
             binding.MaxReceivedMessageSize = 2147483647;
 
-            binding.SendTimeout = new TimeSpan(0, 15, 0);
-            binding.ReceiveTimeout = new TimeSpan(0, 15, 0);
-            binding.OpenTimeout = new TimeSpan(0, 1, 0);
-            binding.CloseTimeout = new TimeSpan(0, 1, 0);
-            
+            binding.OpenTimeout = TimeSpan.FromMinutes(5);
+            binding.CloseTimeout = TimeSpan.FromMinutes(5);
+            binding.ReceiveTimeout = TimeSpan.FromMinutes(15);
+            binding.SendTimeout = TimeSpan.FromMinutes(15);
+
+
             binding.ReaderQuotas.MaxStringContentLength = 2147483647;
             return binding;
         }
+       
         private SvcReturn ExecNonQuery(MyCommand[] cmds)
         {
             return MyChannel.ExecNonQuery(cmds);
         }
-        
-        public SvcReturnList<T> ExecQuery<T>(List<MyCommand> lstMyCmd)
+        //public void SetTransOption(TransactionScopeOption scopeOption)
+        //{
+        //    MyChannel.SetTransOption (scopeOption);
+        //}
+        public SvcReturnList<T> ExecQuery<T>(List<MyCommand> lstMyCmd, TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
             try
             {
-                SvcReturn resRtn = MyChannel.ExecNonQuery(lstMyCmd.ToArray());
+                SvcReturn resRtn = MyChannel.ExecNonQuery(lstMyCmd.ToArray(), scopeOption);
 
                 var doc = XDocument.Parse(resRtn.ReturnStr);
                 List<T> lstOutPut = DeserializeXml<T>(doc);
