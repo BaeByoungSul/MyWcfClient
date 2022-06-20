@@ -14,15 +14,15 @@ namespace BBS
         NetTcp
     }
 
-    public class FileClient:IDisposable
+    public class FileClient
     {
 
-        private EndpointAddress address_http = new EndpointAddress("http://20.41.115.26:9210/FileService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.41.115.26:9220/FileService");
+        //private EndpointAddress address_http = new EndpointAddress("http://20.41.115.26:9210/FileService");
+        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.41.115.26:9220/FileService");
        // private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9210/FileService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9220/FileService");
-        //private EndpointAddress address_http = new EndpointAddress("http://localhost:9210/FileService");
-        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9220/FileService");
+        private EndpointAddress address_http = new EndpointAddress("http://localhost:9210/FileService");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9220/FileService");
 
 
         private ChannelFactory<IFileService> MyFactory { get; set; }
@@ -58,8 +58,24 @@ namespace BBS
                 throw ex;
             }
         }
-   
+        /// <summary>
+        /// task.run(action) == Task.Factory.StartNew(action);
+        /// </summary>
+        /// <param name="uploadFile"></param>
+        /// <returns></returns>
+        public Task UploadFileAsync(FileData uploadFile)
+        {
+            try
+            {
+                return Task.Factory.StartNew(() => MyChannel.UploadFile(uploadFile));
+                //return Task.Run(() =>  MyChannel.UploadFile(uploadFile));
+            }
+            catch (Exception ex)
+            {
 
+                throw ex;
+            }            
+        }
         public FileData DownloadFile(DownloadRequest request)
         {
             try
@@ -72,12 +88,28 @@ namespace BBS
                 throw ex;
             }
         }
+        public Task<FileData> DownloadFileAsync(DownloadRequest request)
+        {
+            try
+            {
+                //Func<FileData> function = new Func<FileData>(() => MyChannel.DownloadFile(request));
+                //return Task.Factory.StartNew<FileData>(function);
+
+                return Task.Factory.StartNew<FileData>(() => MyChannel.DownloadFile(request));
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         private BasicHttpBinding GetHttpBinding()
         {
             BasicHttpBinding binding = new BasicHttpBinding();
 
             binding.TransferMode = TransferMode.Streamed;
-            //binding.MessageEncoding = WSMessageEncoding.Mtom;
+            binding.MessageEncoding = WSMessageEncoding.Mtom;
             binding.Security.Mode = BasicHttpSecurityMode.None;
             // < readerQuotas maxStringContentLength = "2147483647" />
     
@@ -107,7 +139,7 @@ namespace BBS
             return binding;
         }
 
-        public void Dispose()
+        public void MyClose()
         {
             ((IClientChannel)MyChannel).Close();
             MyFactory.Close();

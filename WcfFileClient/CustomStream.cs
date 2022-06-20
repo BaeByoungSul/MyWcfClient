@@ -22,7 +22,6 @@ namespace WcfClient
 
     /// <summary>
     /// 파일 전송 진행율을 보기 위해서 만듬
-    /// 필요없어면 사용하지 않아도 됨
     /// </summary>
     public class CustomStream : Stream
     {
@@ -68,6 +67,8 @@ namespace WcfClient
         {
             int result = _file.Read(buffer, offset, count);
             _bytesRead += result;
+            
+            // Console.WriteLine("bytes read {0}", _bytesRead);
             if (ProgressChanged != null)
             {
                 ProgressChanged(this, new ProgressChangedEventArgs(_bytesRead, _length));
